@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotEukali.AwsHelpers", "DotEukali.AwsHelpers\DotEukali.AwsHelpers.csproj", "{30C89465-6DFC-4702-8857-D16F187246F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotEukali.AwsHelpers.Lambda", "DotEukali.AwsHelpers.Lambda\DotEukali.AwsHelpers.Lambda.csproj", "{C6873A44-2688-48CA-A9F3-340C1F05D093}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotEukali.AwsHelpers.DynamoDb", "DotEukali.AwsHelpers.DynamoDb\DotEukali.AwsHelpers.DynamoDb.csproj", "{CFEDB552-B10D-40B0-85CE-F300788803DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{30C89465-6DFC-4702-8857-D16F187246F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{30C89465-6DFC-4702-8857-D16F187246F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{30C89465-6DFC-4702-8857-D16F187246F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{30C89465-6DFC-4702-8857-D16F187246F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6873A44-2688-48CA-A9F3-340C1F05D093}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6873A44-2688-48CA-A9F3-340C1F05D093}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6873A44-2688-48CA-A9F3-340C1F05D093}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6873A44-2688-48CA-A9F3-340C1F05D093}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFEDB552-B10D-40B0-85CE-F300788803DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFEDB552-B10D-40B0-85CE-F300788803DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFEDB552-B10D-40B0-85CE-F300788803DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFEDB552-B10D-40B0-85CE-F300788803DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

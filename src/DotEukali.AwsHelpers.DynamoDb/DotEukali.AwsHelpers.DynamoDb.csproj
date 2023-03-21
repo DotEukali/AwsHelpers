@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<Authors>DotEukali</Authors>
+		<Version>0.0.1</Version>
+		<Description>General helper classes and extensions for AWS DynamoDb</Description>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/DotEukali/AwsHelpers/DotEukali.AwsHelpers.DynamoDb</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/DotEukali/AwsHelpers</RepositoryUrl>
+		<PackageTags>DotEukali AWS DynamoDb</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.102.9" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+</Project>

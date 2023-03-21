@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Amazon.DynamoDBv2.Model;
 
 namespace DotEukali.AwsHelpers.DynamoDb.Models
 {
-    public sealed class TransactionModel
+    public class TransactionModel
     {
         public IList<Put> Put { get; set; } = new List<Put>();
         public IList<Update> Update { get; set; } = new List<Update>();
