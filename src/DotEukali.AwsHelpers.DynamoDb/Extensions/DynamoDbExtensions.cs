@@ -84,8 +84,8 @@ namespace DotEukali.AwsHelpers.DynamoDb.Extensions
             foreach (var property in typeof(T).GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
                          .Where(prop => prop.GetCustomAttributes<DynamoDBPropertyAttribute>().Any()))
             {
-                var originalValue = property.GetPropertyValue(property.Name);
-                var newValue = property.GetPropertyValue(property.Name);
+                var originalValue = original.GetPropertyValue(property.Name);
+                var newValue = newVersion.GetPropertyValue(property.Name);
 
                 if (originalValue != newValue)
                 {

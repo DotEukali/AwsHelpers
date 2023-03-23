@@ -44,6 +44,18 @@ namespace DotEukali.AwsHelpers.Lambda
 
         protected abstract void RegisterServices(IServiceCollection services, IConfiguration configuration);
 
-        public virtual IConfiguration BuildConfig() => new ConfigurationBuilder().Build();
+        protected virtual IConfiguration BuildConfig() =>
+            new ConfigurationBuilder()
+                .AddJsonFile(GetAppSettingsFilename(), true, true)
+                .Build();
+
+        private static string GetAppSettingsFilename()
+        {
+            string? environment = Environment.GetEnvironmentVariable("Environment");
+
+            return !string.IsNullOrWhiteSpace(environment) 
+                ? $"appsettings.{environment}.json" 
+                : "appsettings.json";
+        }
     }
 }
