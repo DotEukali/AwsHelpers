@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Amazon.Auth.AccessControlPolicy;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
 using DotEukali.AwsHelpers.DynamoDb.Models;
@@ -10,12 +11,6 @@ namespace DotEukali.AwsHelpers.DynamoDb.Extensions
 {
     public static class DynamoDbExtensions
     {
-        public static TransactWriteItemsRequest ToTransactWriteItemsRequest(this TransactionModel transactionModel) =>
-            new TransactWriteItemsRequest()
-            {
-                TransactItems = transactionModel.GetAllActions().Select(x => x.ToTransactWriteItem()).ToList()
-            };
-
         public static string? GetDynamoDbTableName(this object obj) =>
             (Attribute.GetCustomAttributes(obj.GetType())
                 .FirstOrDefault(x => x is DynamoDBTableAttribute) as DynamoDBTableAttribute)?.TableName;
@@ -37,32 +32,27 @@ namespace DotEukali.AwsHelpers.DynamoDb.Extensions
                 Item = BuildPropertiesAttributeDictionary(obj)
             };
 
-        public static Update ToUpdate<T>(this T existing, T newVersion)
+        public static Update? ToUpdate<T>(this T existing, T newVersion)
         {
             if (existing == null) throw new ArgumentNullException(nameof(existing));
             if (newVersion == null) throw new ArgumentNullException(nameof(newVersion));
 
-            Dictionary<string, AttributeValue> existingKeys = BuildPrimaryKeyAttributeDictionary(existing);
-            Dictionary<string, AttributeValue> newKeys = BuildPrimaryKeyAttributeDictionary(newVersion);
-
-            if (existingKeys.Any(key => key.Value != newKeys[key.Key]))
-            {
-                throw new Exception();
-            }
-
-            if (newKeys.Any(key => key.Value != existingKeys[key.Key]))
-            {
-                throw new Exception();
-            }
-
             UpdateModel model = GetUpdateModel(existing, newVersion);
+
+            if (!model.HasChanges())
+            {
+                return null;
+            }
+
+            ValidateUpdateKeys(existing, newVersion);
 
             return new Update
             {
                 TableName = existing.GetDynamoDbTableName() ?? throw new ArgumentNullException("TableName"),
-                Key = existingKeys,
-                UpdateExpression = model.UpdateExpression,
-                ExpressionAttributeValues = model.ExpressionAttributeValues
+                Key = BuildPrimaryKeyAttributeDictionary(existing),
+                UpdateExpression = model.GetUpdateExpression(),
+                ExpressionAttributeNames = model.GetExpressionAttributeNames(),
+                ExpressionAttributeValues = model.GetExpressionAttributeValues()
             };
         }
 
@@ -80,26 +70,58 @@ namespace DotEukali.AwsHelpers.DynamoDb.Extensions
 
             UpdateModel model = new UpdateModel();
             int varId = 0;
-
+            
             foreach (var property in typeof(T).GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
-                         .Where(prop => prop.GetCustomAttributes<DynamoDBPropertyAttribute>().Any()))
+                         .Where(prop => prop.GetCustomAttributes<DynamoDBPropertyAttribute>().Any() 
+                                                && !prop.GetCustomAttributes<DynamoDBHashKeyAttribute>().Any()
+                                                && !prop.GetCustomAttributes<DynamoDBRangeKeyAttribute>().Any()))
             {
-                var originalValue = original.GetPropertyValue(property.Name);
-                var newValue = newVersion.GetPropertyValue(property.Name);
+                object? originalValue = original.GetPropertyValue(property.Name);
+                object? newValue = newVersion.GetPropertyValue(property.Name);
 
-                if (originalValue != newValue)
+                if (originalValue == null && newValue != null)
                 {
-                    varId++;
-                    string key = $":val{varId}";
-
-                    model.UpdateExpression += $" {property.Name} = {key},";
-                    model.ExpressionAttributeValues.Add(key, BuildAttributeValue(newVersion, property));
+                    model.Adds.Add(property.Name, BuildAttributeValue(newVersion, property));
+                }
+                else if (originalValue != null && newValue == null)
+                {
+                    model.Removes.Add(property.Name, BuildAttributeValue(newVersion, property));
+                }
+                else if (originalValue != newValue)
+                {
+                    model.Sets.Add(property.Name, BuildAttributeValue(newVersion, property));
                 }
             }
 
-            model.UpdateExpression.Trim(',');
-
             return model;
+        }
+
+        private static void ValidateUpdateKeys<T>(this T existing, T newVersion)
+        {
+            Dictionary<string, object?> existingKeys = existing!.GetType()
+                .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
+                .Where(prop => prop.GetCustomAttributes<DynamoDBHashKeyAttribute>().Any()
+                               || prop.GetCustomAttributes<DynamoDBRangeKeyAttribute>().Any())
+                .ToDictionary(prop => prop.Name, prop => GetPropertyValue(existing, prop.Name));
+
+            Dictionary<string, object?> newKeys = newVersion!.GetType()
+                .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
+                .Where(prop => prop.GetCustomAttributes<DynamoDBHashKeyAttribute>().Any()
+                               || prop.GetCustomAttributes<DynamoDBRangeKeyAttribute>().Any())
+                .ToDictionary(prop => prop.Name, prop => GetPropertyValue(existing, prop.Name));
+
+            //foreach (var key in existingKeys)
+            //{
+            //    if(!(newKeys.TryGetValue(key.Key, out object? nk) && key.Value == nk))
+            //}
+
+            if (existingKeys.Values.Any(x => x == null)
+                || newKeys.Values.Any(x => x == null)
+                || !existingKeys.Any(key => newKeys.TryGetValue(key.Key, out object? newKeyValue) && key.Value!.Equals(newKeyValue))
+                || !newKeys.Any(key => existingKeys.TryGetValue(key.Key, out object? existingKeyValue) && key.Value!.Equals(existingKeyValue)))
+            {
+                throw new Exception("Key values do not match.");
+            }
         }
 
         private static object? GetPropertyValue(this object source, string propertyName) =>

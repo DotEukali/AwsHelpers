@@ -5,7 +5,8 @@ namespace DotEukali.AwsHelpers.DynamoDb.Models
 {
     internal class UpdateModel
     {
-        public string UpdateExpression { get; set; } = "SET";
-        public Dictionary<string, AttributeValue> ExpressionAttributeValues { get; set; } = new Dictionary<string, AttributeValue>();
+        public IDictionary<string, AttributeValue> Adds = new Dictionary<string, AttributeValue>();
+        public IDictionary<string, AttributeValue> Sets = new Dictionary<string, AttributeValue>();
+        public IDictionary<string, AttributeValue> Removes = new Dictionary<string, AttributeValue>();
     }
 }

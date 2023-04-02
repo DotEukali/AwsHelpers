@@ -1,15 +1,33 @@
-﻿using Amazon.DynamoDBv2.Model;
+﻿using System.Collections;
+using Amazon.DynamoDBv2.Model;
 using DotEukali.AwsHelpers.DynamoDb.Models;
+using System.Linq;
 
 namespace DotEukali.AwsHelpers.DynamoDb.Extensions
 {
     public static class TransactionModelExtensions
     {
+        public static TransactWriteItemsRequest ToTransactWriteItemsRequest(this TransactionModel transactionModel) =>
+            new TransactWriteItemsRequest()
+            {
+                TransactItems = transactionModel.GetAllActions().Select(x => x.ToTransactWriteItem()).ToList()
+            };
+
         public static TransactionModel AddPuts(this TransactionModel transactionModel, params object[] putObjects)
         {
             foreach (var obj in putObjects)
             {
-                transactionModel.Put.Add(obj.ToPut());
+                if (obj is IEnumerable putList)
+                {
+                    foreach (var putItem in putList)
+                    {
+                        transactionModel.Put.Add(putItem.ToPut());
+                    }
+                }
+                else
+                {
+                    transactionModel.Put.Add(obj.ToPut());
+                }
             }
 
             return transactionModel;
@@ -19,7 +37,10 @@ namespace DotEukali.AwsHelpers.DynamoDb.Extensions
             where T : class
 
         {
-            transactionModel.Update.Add(oldValue.ToUpdate<T>(newValue));
+            Update? update = oldValue.ToUpdate<T>(newValue);
+            
+            if (update != null)
+                transactionModel.Update.Add(update);
 
             return transactionModel;
         }
@@ -28,7 +49,17 @@ namespace DotEukali.AwsHelpers.DynamoDb.Extensions
         {
             foreach (var obj in deleteObjects)
             {
-                transactionModel.Delete.Add(obj.ToDelete());
+                if (obj is IEnumerable deleteList)
+                {
+                    foreach (var deleteItem in deleteList)
+                    {
+                        transactionModel.Delete.Add(deleteItem.ToDelete());
+                    }
+                }
+                else
+                {
+                    transactionModel.Delete.Add(obj.ToDelete());
+                }
             }
 
             return transactionModel;

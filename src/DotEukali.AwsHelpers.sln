@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotEukali.AwsHelpers.Lambda", "DotEukali.AwsHelpers.Lambda\DotEukali.AwsHelpers.Lambda.csproj", "{C6873A44-2688-48CA-A9F3-340C1F05D093}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotEukali.AwsHelpers.Lambda", "DotEukali.AwsHelpers.Lambda\DotEukali.AwsHelpers.Lambda.csproj", "{C6873A44-2688-48CA-A9F3-340C1F05D093}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotEukali.AwsHelpers.DynamoDb", "DotEukali.AwsHelpers.DynamoDb\DotEukali.AwsHelpers.DynamoDb.csproj", "{CFEDB552-B10D-40B0-85CE-F300788803DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotEukali.AwsHelpers.DynamoDb", "DotEukali.AwsHelpers.DynamoDb\DotEukali.AwsHelpers.DynamoDb.csproj", "{CFEDB552-B10D-40B0-85CE-F300788803DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotEukali.AwsHelpers.DynamoDb.Tests", "DotEukali.AwsHelpers.DynamoDb.Tests\DotEukali.AwsHelpers.DynamoDb.Tests.csproj", "{AAA2552D-22C7-4392-8142-C56CAD5C5D1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{CFEDB552-B10D-40B0-85CE-F300788803DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFEDB552-B10D-40B0-85CE-F300788803DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFEDB552-B10D-40B0-85CE-F300788803DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAA2552D-22C7-4392-8142-C56CAD5C5D1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAA2552D-22C7-4392-8142-C56CAD5C5D1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAA2552D-22C7-4392-8142-C56CAD5C5D1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAA2552D-22C7-4392-8142-C56CAD5C5D1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

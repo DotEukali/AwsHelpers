@@ -4,7 +4,7 @@
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<Nullable>enable</Nullable>
 		<Authors>DotEukali</Authors>
-		<Version>0.0.2</Version>
+		<Version>0.0.3</Version>
 		<Description>General helper classes and extensions for AWS DynamoDb</Description>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -15,7 +15,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.102.9" />
+		<PackageReference Include="AWSSDK.DynamoDBv2" Version="3.*" />
 	</ItemGroup>
 
 	<ItemGroup>
