@@ -56,7 +56,14 @@ namespace DotEukali.AwsHelpers.DynamoDb.Tests.Extensions
 
             Update? update = existing.ToUpdate(changes);
             
-            update!.ExpressionAttributeNames.Should().NotBeNull();
+            update!.Key.Count.Should().Be(1);
+            update!.Key.Single().Key.Should().Be(nameof(TestDynamoDbTableClass.HashKey));
+            update.Key.Single().Value.S.Should().Be(hash.ToString());
+
+            update.ExpressionAttributeNames.Count.Should().Be(2);
+            update.ExpressionAttributeValues.Count.Should().Be(2);
+
+            update.UpdateExpression.Should().Be("SET #setName0 = :setValue0, #setName1 = :setValue1 ");
 
         }
     }

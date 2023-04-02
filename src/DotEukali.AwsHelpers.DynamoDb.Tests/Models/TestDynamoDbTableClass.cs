@@ -10,7 +10,7 @@ namespace DotEukali.AwsHelpers.DynamoDb.Tests.Models
         [DynamoDBGlobalSecondaryIndexRangeKey]
         public Guid HashKey { get; set; }
 
-        [DynamoDBRangeKey]
+        //[DynamoDBRangeKey]
         [DynamoDBGlobalSecondaryIndexHashKey]
         public Guid RangeKey { get; set; }
 

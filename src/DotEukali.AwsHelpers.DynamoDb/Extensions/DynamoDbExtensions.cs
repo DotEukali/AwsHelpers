@@ -129,8 +129,10 @@ namespace DotEukali.AwsHelpers.DynamoDb.Extensions
 
         private static Dictionary<string, AttributeValue> BuildPrimaryKeyAttributeDictionary(this object source) =>
             source.GetType().GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
-                .Where(prop => prop.GetCustomAttributes<DynamoDBHashKeyAttribute>().Any()
-                               || prop.GetCustomAttributes<DynamoDBRangeKeyAttribute>().Any())
+                .Where(prop => (prop.GetCustomAttributes<DynamoDBHashKeyAttribute>().Any() 
+                                && !prop.GetCustomAttributes<DynamoDBGlobalSecondaryIndexHashKeyAttribute>().Any())
+                               || (prop.GetCustomAttributes<DynamoDBRangeKeyAttribute>().Any()
+                               && !prop.GetCustomAttributes<DynamoDBGlobalSecondaryIndexRangeKeyAttribute>().Any()))
                 .ToDictionary(prop => prop.Name, prop => BuildAttributeValue(source, prop));
 
         private static Dictionary<string, AttributeValue> BuildPropertiesAttributeDictionary(this object source) =>
