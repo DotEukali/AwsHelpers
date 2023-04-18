@@ -7,12 +7,12 @@ namespace DotEukali.AwsHelpers.Lambda
 {
     public class LambdaResponse : APIGatewayProxyResponse
     {
-        private static string _allowedHeaders = "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token";
+        private static string _allowedHeaders = "*";
         private static string _allowedMethods = "DELETE,GET,POST,PUT,OPTIONS";
         private static string _allowedOrigin = "*";
 
         private static Func<object?, string?> _responseObjectTransformer = responseBody =>
-            responseBody == null ? null 
+            responseBody == null ? null
                 : JsonSerializer.Serialize(responseBody);
 
         private static Func<string?, string?> _responseStringTransformer = responseBody =>
@@ -59,6 +59,9 @@ namespace DotEukali.AwsHelpers.Lambda
         public static void SetAllowedOrigin(string allowedOrigin) => _allowedOrigin = allowedOrigin;
         public static void SetResponseObjectTransformer(Func<object?, string?> objectTransformer) => _responseObjectTransformer = objectTransformer;
         public static void SetResponseStringTransformer(Func<string?, string?> stringTransformer) => _responseStringTransformer = stringTransformer;
+
+        public static void AddAllowedHeaders(string allowedHeaders) => _allowedHeaders += $",{allowedHeaders.Trim(',')}".Trim(',');
+        public static void AddAllowedMethods(string allowedMethods) => _allowedMethods += $",{allowedMethods.Trim(',')}".Trim(',');
 
         private static bool IsBase64String(string? base64)
         {

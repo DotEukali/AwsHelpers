@@ -5,23 +5,23 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<Authors>DotEukali</Authors>
-		<Version>0.0.2</Version>
+		<Version>0.0.3</Version>
 		<Description>Helper classes and extensions for AWS Lambda</Description>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/DotEukali/AwsHelpers/tree/main/src/DotEukali.AwsHelpers.Lambda</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/DotEukali/AwsHelpers</RepositoryUrl>
-		<PackageTags>DotEukali AWS</PackageTags>
+		<PackageTags>DotEukali AWS Lambda</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Amazon.Lambda.APIGatewayEvents" Version="2.6.0" />
-		<PackageReference Include="Amazon.Lambda.Core" Version="2.1.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+		<PackageReference Include="Amazon.Lambda.APIGatewayEvents" Version="2.*" />
+		<PackageReference Include="Amazon.Lambda.Core" Version="2.*" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.*" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.*" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.*" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.*" />
 	</ItemGroup>
 
 	<ItemGroup>
